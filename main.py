@@ -1,6 +1,15 @@
 class AssaultRifle:
     def __init__(self, magazine_capacity=None, firing_rate=None,
                  firing_distance=None):
+        """
+        base class of weapon classes hierarchy
+        parameters are equals to class fields, so you can easily change it
+        at child by super.init call with *args
+        
+        :arg magazine_capacity: capacity of one magazine
+        :arg firing_rate: shots that can be done while a minute
+        :arg firing_distance: effective distance of shooting in metres
+        """
         self.magazine_capacity = 30 if magazine_capacity is None \
             else magazine_capacity
         self.firing_rate = 600 if firing_rate is None \
@@ -9,6 +18,10 @@ class AssaultRifle:
             else firing_distance
 
     def __add__(self, other):
+        """
+        :param other: AssaultRiffle | child class object
+        :return: **kwargs that contains absolute difference between objects fields
+        """
         return {
             'magazine_capacity':
                 abs(self.magazine_capacity - other.magazine_capacity),
@@ -26,14 +39,22 @@ class AssaultRifle:
                f'\n\t{self.get_frate_to_fdistance_ratio()=}'
 
     def get_magazine_shot_out_secs(self) -> float:
-        return self.magazine_capacity / self.magazine_capacity * 60
+        """
+        :return: seconds to shot out full magazine
+        """
+        return self.magazine_capacity / self.firing_rate * 60
 
     def get_frate_to_fdistance_ratio(self) -> float:
+        """
+        :return: ratio of firing rate to firing effective distance
+        (first divided to second)
+        """
         return self.firing_rate / self.firing_distance
 
 
 class Pistol(AssaultRifle):
     def __init__(self):
+        """ the Pistol class with built-in parameters """
         super().__init__(
             magazine_capacity=8,
             firing_rate=20,
@@ -43,6 +64,7 @@ class Pistol(AssaultRifle):
 
 class Carbine(AssaultRifle):
     def __init__(self):
+        """ the Carbine class with built-in parameters """
         super().__init__(
             magazine_capacity=10,
             firing_rate=4,
@@ -52,6 +74,7 @@ class Carbine(AssaultRifle):
 
 class SniperRifle(AssaultRifle):
     def __init__(self):
+        """ the SniperRifle class with built-in parameters """
         super().__init__(
             magazine_capacity=10,
             firing_rate=2,
